@@ -5,8 +5,9 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }*/
-    
-    def mvnHome
+    environment { 
+        mvnHome = ''
+    } 
     stages {
            stage('Preparation') { // for display purposes
               // Get some code from a GitHub repository

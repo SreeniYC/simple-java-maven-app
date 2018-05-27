@@ -23,14 +23,14 @@ pipeline {
             }
         }
         stage('Veracode Scan'){
-                    echo 'Remove VeracodeScan folder if exists'
+                    sh 'echo "Remove VeracodeScan folder if exists"'
                     sh 'rm VeracodeScan -r -f'
                     
-                    echo 'Create VeracodeScan folder and Copy files'
+                   sh 'echo "Create VeracodeScan folder and Copy files"'
                     sh 'mkdir VeracodeScan -p'
                     sh 'cp target/*.jar VeracodeScan'
                     
-                    echo 'Upload the binaries to Veracode'
+                    sh 'echo "Upload the binaries to Veracode"'
                     sh 'sh veracode.sh ${env.VERACODE_API_ID} ${env.VERACODE_API_KEY} ${env.VERACODE_APP_NAME} VeracodeScan/ $BUILD_NUMBER Veracode-api/'
         }
         stage('Test') {

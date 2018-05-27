@@ -32,7 +32,7 @@ pipeline {
                     sh 'cp target/*.jar VeracodeScan'
                     
                     sh 'echo "Upload the binaries to Veracode"'
-                    sh "./Veracode-api/veracode.sh ${env.VERACODE_API_ID} ${env.VERACODE_API_KEY} ${env.VERACODE_APP_NAME} VeracodeScan/ $BUILD_NUMBER Veracode-api/"
+                    sh "sh Veracode-api/veracode.sh ${env.VERACODE_API_ID} ${env.VERACODE_API_KEY} ${env.VERACODE_APP_NAME} VeracodeScan/ $BUILD_NUMBER Veracode-api/"
                 }
         }
         stage('Test') {

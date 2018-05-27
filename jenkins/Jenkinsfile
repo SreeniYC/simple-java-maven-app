@@ -5,6 +5,13 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }*/
+    environment{
+        VERACODE_API_ID = "7b35445f53e5f1eaf6956314f6f16f60"
+                                                                                                
+        VERACODE_API_KEY ="5690e0662ea2e0d11d06e8e4b1578f81c5ffa59f5c037c7bee9fb404e05c62caa176c0abbbf738b1bc0fa229c476bf96501556188f375a2be2d2 0b9624c8464c"
+                                                                                                
+        VERACODE_APP_NAME = "VeracodeAPI-Pipeline"
+    }
     tools { 
         maven 'Maven3' 
         //jdk 'jdk8' 
@@ -14,6 +21,17 @@ pipeline {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
+        }
+        stage('Veracode Scan'){
+                    echo 'Remove VeracodeScan folder if exists'
+                    sh 'rm VeracodeScan -r -f'
+                    
+                    echo 'Create VeracodeScan folder and Copy files'
+                    sh 'mkdir VeracodeScan -p'
+                    sh 'cp target/*.jar VeracodeScan'
+                    
+                    echo 'Upload the binaries to Veracode'
+                    sh 'sh veracode.sh ${env.VERACODE_API_ID} ${env.VERACODE_API_KEY} ${env.VERACODE_APP_NAME} VeracodeScan/ $BUILD_NUMBER Veracode-api/'
         }
         stage('Test') {
             steps {
